@@ -18,6 +18,15 @@ defmodule Slack.Router do
 
     get "/", PageController, :index
     resources "/users", UserController
+    
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
+    delete "/logout", SessionController, :delete
+    get "/register", RegistrationController, :new
+    post "/register", RegistrationController, :create
+    
+    # resources "/messages/:channel", MessageController
+    
   end
 
   # Other scopes may use custom stacks.
