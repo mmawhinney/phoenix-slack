@@ -6,6 +6,7 @@ defmodule Slack.Repo.Migrations.CreateUser do
       add :first_name, :string
       add :last_name, :string
       add :username, :string, null: false
+      add :email, :string
       add :password_hash, :string
       
       timestamps
