@@ -23,4 +23,24 @@ defmodule Slack.User do
     |> unique_constraint(:username)
   end
   
+  @reg_required [:first_name, :last_name, :email, :password, :username]
+  
+  def registration_changeset(model, params \\ :empty) do
+    model
+    |> changeset(params)
+    |> cast(params, @reg_required)
+    |> validate_required(@reg_required)
+    |> validate_length(:password, min: 6)
+    |> put_pass_hash()
+  end
+  
+  defp put_pass_hash(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
+        put_change(changeset, :password_hash, Comeonin.Bcrypt.hashpwsalt(pass))
+      _ -> 
+        changeset
+    end
+  end
+  
 end
