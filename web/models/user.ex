@@ -14,7 +14,7 @@ defmodule Slack.User do
   
   @required [:first_name, :last_name, :username, :email]
   
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ :invalid) do
     model
     |> cast(params, @required)
     |> validate_required(@required)
@@ -25,12 +25,13 @@ defmodule Slack.User do
   
   @reg_required [:first_name, :last_name, :email, :password, :username]
   
-  def registration_changeset(model, params \\ :empty) do
+  def registration_changeset(model, params \\ :invalid) do
     model
     |> changeset(params)
     |> cast(params, @reg_required)
     |> validate_required(@reg_required)
     |> validate_length(:password, min: 6)
+    |> validate_confirmation(:password)
     |> put_pass_hash()
   end
   

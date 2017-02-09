@@ -36,6 +36,7 @@ defmodule Slack.Web do
 
       import Slack.Router.Helpers
       import Slack.Gettext
+      import Slack.Auth, only: [authenticate_user: 2]
     end
   end
 
