@@ -1,0 +1,8 @@
+%h1 Listing Users
+%table.table
+  - for user <- @users do
+    %tr
+      %td
+        %b #{user.first_name} #{user.last_name}
+        = "(#{user.id})"
+      %td= link "View", to: user_path(@conn, :show, user.id)
