@@ -32,6 +32,7 @@ defmodule Slack.User do
     |> validate_required(@reg_required)
     |> validate_length(:password, min: 6)
     |> validate_confirmation(:password)
+    |> unique_constraint(:email)
     |> put_pass_hash()
   end
   
