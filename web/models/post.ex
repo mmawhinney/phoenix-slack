@@ -4,13 +4,12 @@ defmodule Slack.Post do
 
   schema "posts" do
     field :body, :string
-    field :at, :integer
     belongs_to :user, Slack.User
 
     timestamps()
   end
 
-  @required [:body, :at]
+  @required [:body]
 
   def changeset(struct, params \\ %{}) do
     struct

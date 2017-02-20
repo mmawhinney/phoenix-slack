@@ -7,14 +7,11 @@ let Messages = {
     },
 
     onReady(socket) {
-        let postButton = document.getElementById("post-btn");
         let msgInput = document.getElementById("msg-input");
         let msgContainer = document.getElementById("msg-container");
         let msgInputJq = $('#msg-input');
-        // this.setFocus(msgInput);
 
         let messagesChannel = socket.channel('room:1');
-
 
         autosize(msgInputJq);
 
@@ -23,10 +20,6 @@ let Messages = {
                 Messages.postMessage(msgInput, msgInputJq, messagesChannel);
                 e.preventDefault();
             }
-        });
-
-        postButton.addEventListener("click", (e) => {
-            this.postMessage(msgInput, msgInputJq, messagesChannel);
         });
 
         messagesChannel.on("new_message", (resp) => {

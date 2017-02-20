@@ -6,12 +6,27 @@ defmodule Slack.RoomChannel do
   end
 
   def handle_in("new_message", params, socket) do
-    broadcast! socket, "new_message", %{
+#    changeset =
+#      user
+#      |> build_assoc(:posts)
+#      |> Slack.Post.changeset(params)
+
+    changeset = Slack.Post.changeset(%Slack.Post{}, params)
+
+    case Repo.insert(changeset) do
+      {:ok, post} ->
+        broadcast_post(socket, "new_message", params)
+        {:reply, :ok, socket}
+      {:error, changeset} ->
+        {:reply, {:error, %{errors: changeset}}, socket}
+    end
+  end
+
+  def broadcast_post(socket, event, params) do
+    broadcast! socket, event, %{
       body: params["body"],
       user: %{username: "anon"}
     }
-
-    {:reply, :ok, socket}
   end
 
 end
