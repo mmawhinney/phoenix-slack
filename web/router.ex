@@ -25,7 +25,8 @@ defmodule Slack.Router do
     delete "/logout/:id", SessionController, :delete
     get "/register", RegistrationController, :new
     post "/register", RegistrationController, :create
-    
+
+    get "/message", MessageController, :index
     # resources "/messages/:channel", MessageController
     
   end
