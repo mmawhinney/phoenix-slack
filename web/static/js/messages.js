@@ -1,36 +1,45 @@
 import autosize from 'autosize';
 
 let Messages = {
-    init() {
-        this.onReady();
+    init(socket) {
+        socket.connect();
+        this.onReady(socket);
     },
 
-    onReady() {
+    onReady(socket) {
         let postButton = document.getElementById("post-btn");
         let msgInput = document.getElementById("msg-input");
         let msgContainer = document.getElementById("msg-container");
         let msgInputJq = $('#msg-input');
         // this.setFocus(msgInput);
 
+        let messagesChannel = socket.channel('room:1');
+
+
         autosize(msgInputJq);
 
         msgInputJq.keypress(function(e) {
             if(e.which == 13 && !e.shiftKey) {
-                Messages.addMessage(msgContainer, msgInput.value);
-                msgInput.value = "";
-                Messages.setFocus(msgInput);
-                autosize.update(msgInputJq);
+                Messages.postMessage(msgInput, msgInputJq, messagesChannel);
                 e.preventDefault();
             }
         });
 
-        postButton.addEventListener("click", e => {
-            this.addMessage(msgContainer, msgInput.value);
-            msgInput.value = "";
-            this.setFocus(msgInput);
-            autosize.update(msgInputJq);
-            autosize.update(msgInputJq);
-        })
+        postButton.addEventListener("click", (e) => {
+            this.postMessage(msgInput, msgInputJq, messagesChannel);
+        });
+
+        messagesChannel.on("new_message", (resp) => {
+            this.addMessage(msgContainer, resp);
+        });
+
+        messagesChannel.join()
+            .receive("ok", resp => {
+                console.log("joined channel", resp);
+            })
+            .receive("error", reason => {
+                console.log("failed to join channel", reason);
+            });
 
     },
 
@@ -40,16 +49,28 @@ let Messages = {
         return div.innerHTML;
     },
 
-    addMessage(msgContainer, text) {
+    addMessage(msgContainer, {body, user}) {
         let template = document.createElement('div');
         template.innerHTML = `
-            ${this.esc(text)}
+            ${this.esc(body)}
         `;
         msgContainer.appendChild(template);
     },
 
     setFocus(msgInput) {
         msgInput.focus();
+    },
+
+    postMessage(msgInput, msgInputJq, messagesChannel) {
+        let payload = {body: msgInput.value};
+        messagesChannel.push("new_message", payload).receive("error", reason => {console.log(reason)});
+        this.afterMessageCleanup(msgInput, msgInputJq);
+    },
+
+    afterMessageCleanup(msgInput, msgInputJq) {
+        msgInput.value = "";
+        this.setFocus(msgInput);
+        autosize.update(msgInputJq);
     }
 };
 export default Messages;
