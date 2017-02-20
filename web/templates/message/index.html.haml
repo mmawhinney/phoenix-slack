@@ -4,7 +4,7 @@
       %h3.panel-heading Messages
       .panel-body#msg-container
     .input-group
-      %input.form-control{type: 'text', placeholder: 'Message...'}#msg-input
+      %textarea.form-control{required: 'true', placeholder: 'Message...', rows: '1', autofocus: 'true'}#msg-input
       %span.input-group-btn
         %button.btn.btn-primary{type: 'submit'}#post-btn
           Post
