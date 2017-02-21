@@ -1,7 +1,10 @@
 import autosize from 'autosize';
 
 let Messages = {
-    init(socket) {
+    init(socket, element) {
+        if(!element) {
+            return;
+        }
         socket.connect();
         this.onReady(socket);
     },

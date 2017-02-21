@@ -20,4 +20,4 @@ import "phoenix_html"
 
 import socket from "./socket"
 import Messages from "./messages"
-Messages.init(socket);
+Messages.init(socket, document.getElementById('messages-page'));
