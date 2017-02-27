@@ -3,12 +3,17 @@ defmodule Slack.RoomChannel do
   alias Slack.PostView
 
   def join("room:1", _params, socket) do
-    {:ok, assign(socket, :room_id, 1)}
+    posts = Repo.all(
+      from p in Slack.Post,
+      order_by: [asc: p.inserted_at],
+      preload: [:user]
+    )
+    resp = %{posts: Phoenix.View.render_many(posts, PostView, "post.json")}
+    {:ok, resp, assign(socket, :room_id, 1)}
   end
 
   def handle_in("new_message", params, socket) do
     user = Repo.get(Slack.User, socket.assigns.user_id)
-
     changeset =
       user
       |> build_assoc(:posts)

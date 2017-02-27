@@ -32,6 +32,7 @@ let Messages = {
         messagesChannel.join()
             .receive("ok", resp => {
                 console.log("joined channel", resp);
+                this.renderPosts(msgContainer, resp.posts);
             })
             .receive("error", reason => {
                 console.log("failed to join channel", reason);
@@ -67,6 +68,10 @@ let Messages = {
         msgInput.value = "";
         this.setFocus(msgInput);
         autosize.update(msgInputJq);
+    },
+
+    renderPosts(msgContainer, posts) {
+      posts.forEach(post => {Messages.addMessage(msgContainer, post)});
     }
 };
 export default Messages;
