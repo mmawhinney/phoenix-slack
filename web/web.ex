@@ -53,6 +53,8 @@ defmodule Slack.Web do
       import Slack.Router.Helpers
       import Slack.ErrorHelpers
       import Slack.Gettext
+
+      import Slack.Session, only: [current_user: 1]
     end
   end
 
