@@ -26,8 +26,8 @@ defmodule Slack.Router do
     get "/register", RegistrationController, :new
     post "/register", RegistrationController, :create
 
-    get "/message", MessageController, :index
-    # resources "/messages/:channel", MessageController
+    get "/messages", MessagesController, :index
+    # resources "/messages/:channel", MessagesController
     
   end
 

@@ -1,4 +1,4 @@
-defmodule Slack.MessageController do
+defmodule Slack.MessagesController do
   use Slack.Web, :controller
   plug :authenticate_user when action in [:index]
 
@@ -8,8 +8,4 @@ defmodule Slack.MessageController do
     changeset = User.changeset(%User{})
     render conn, "index.html", changeset: changeset
   end
-
-
-
-
 end
