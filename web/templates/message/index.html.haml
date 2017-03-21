@@ -1,7 +1,8 @@
 .container-fluid#messages-page
   .row
     .panel.panel-default
-      %h3.panel-heading Messages
+      .panel-heading 
+        %h3.panel-title Messages
       .panel-body#msg-container
     .input-group#msg-input-wrapper
       %textarea.form-control{required: 'true', placeholder: 'Message...', rows: '1', autofocus: 'true'}#msg-input

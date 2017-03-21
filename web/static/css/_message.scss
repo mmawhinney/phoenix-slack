@@ -7,11 +7,8 @@
 }
 
 #msg-container {
-  min-height: 200px;
-}
-
-.input > text {
-
+  height: 600px;
+  overflow: scroll;
 }
 
 #msg-input-wrapper {
@@ -19,5 +16,7 @@
 }
 
 #msg-input {
+  background-color: white;
   resize: none;
+  position: fixed;
 }
